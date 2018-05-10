@@ -15,17 +15,43 @@
             </van-col>
         </van-row>
         </div>
+        <!--swipe area-->
+        <div class="swipe-area">
+            <van-swipe :autoplay='1000'>
+                <van-swipe-item v-for='( banner,index ) in bannerPic' :key="index">
+                  <img v-lazy="banner.imageUrl" alt="" width="100%">
+                </van-swipe-item>
+            </van-swipe>
+        </div>
        
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       msg: "shoppingmall",
-      locationIcon: require("../../assets/images/location.png")
+      locationIcon: require("../../assets/images/location.png"),  
+      bannerPic:[
+        {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic001.jpg'},
+        {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic002.jpg'},
+        {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'},
+      ]
     };
+  },
+  created(){
+    axios({
+      url:'https://www.easy-mock.com/mock/5af43f2e5174243e26511194/SmileVue/index',
+      method:'get'
+    })
+    .then(response=>{
+      console.log(response)
+    })
+    .catch(error=>{
+      cosole.log(error)
+    })
   }
 };
 </script>
@@ -35,6 +61,7 @@ export default {
   height: 2.2rem;
   background-color: #e5017d;
   line-height: 2.2rem;
+  overflow: hidden;
 }
 .search-input {
   width: 100%;
@@ -67,5 +94,10 @@ export default {
 .search-input:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #fff;
+}
+.swipe-area{
+  clear: both;
+  max-height: 15rem;
+  overflow: hidden;
 }
 </style>
