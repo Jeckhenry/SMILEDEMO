@@ -5,8 +5,10 @@ import App from './App'
 import router from './router'
 // import Vant from 'vant'//全局引入vant
 // import 'vant/lib/vant-css/index.css'
-
+// import VueAweSome from 'vue-awesome-swiper'//全局引入
+// import 'swiper/dist/css/swiper.css'
 // Vue.use(Vant)
+// Vue.use(VueAweSome)
 import {Button,Row,Col,Swipe,SwipeItem, Lazyload} from 'vant'
 
 Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload);

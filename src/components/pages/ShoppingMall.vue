@@ -19,39 +19,90 @@
         <div class="swipe-area">
             <van-swipe :autoplay='1000'>
                 <van-swipe-item v-for='( banner,index ) in bannerPic' :key="index">
-                  <img v-lazy="banner.imageUrl" alt="" width="100%">
+                  <img v-lazy="banner.image" alt="" width="100%">
                 </van-swipe-item>
             </van-swipe>
         </div>
-       
+       <!--type-bar-->
+       <div class="type-bar">
+         <div v-for="(cate,index) in category" :key="index">
+            <img v-lazy="cate.image" alt="" width="90%">
+            <span>{{cate.mallCategoryName}}</span>
+         </div>
+       </div>
+       <!--adbanner-->
+       <div>
+         <img v-lazy="adbanner" alt="" width="100%">
+       </div>
+       <!--recommend goods area-->
+       <div class="recommend">
+         <div class="recommend-title">
+            商品推荐
+         </div>
+         <div class="recommend-body">
+           <swiper :options='swiperOption'>
+             <swiper-slide v-for="(recommend,index) in recommendgoods" :key="index">
+               <div class="recommenditem">
+                  <img :src="recommend.image" width="80%" alt="">
+                  <div>{{recommend.goodsName}}</div>
+                  <div>￥ {{recommend.price}}(￥{{recommend.mallPrice}})</div>
+               </div>
+             </swiper-slide>
+           </swiper>
+         </div>
+       </div>
+       <!-- <swiper-default></swiper-default>
+       <swiper-default1></swiper-default1>
+       <swiper-default2></swiper-default2>
+       <swiper-default3></swiper-default3> -->
+       <floor-component :floorData='floor1'></floor-component>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
+import "swiper/dist/css/swiper.css";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+// import swiperDefault from '../swiper/swiperDefault.vue'
+// import swiperDefault1 from '../swiper/swiperDefault.1.vue'
+// import swiperDefault2 from '../swiper/swiperDefault.2.vue'
+// import swiperDefault3 from '../swiper/swiperDefault.3.vue'
+import floorComponent from '../component/floorComponent.vue'
 export default {
   data() {
     return {
+      swiperOption: {
+        slidesPerView: 3
+      },
       msg: "shoppingmall",
-      locationIcon: require("../../assets/images/location.png"),  
-      bannerPic:[
-        {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic001.jpg'},
-        {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic002.jpg'},
-        {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'},
-      ]
+      locationIcon: require("../../assets/images/location.png"),
+      bannerPic: [],
+      category: [],
+      adbanner: "",
+      recommendgoods: [],
+      floor1: []
     };
   },
-  created(){
+  components: { swiper, swiperSlide ,floorComponent},
+  created() {
     axios({
-      url:'https://www.easy-mock.com/mock/5af43f2e5174243e26511194/SmileVue/index',
-      method:'get'
+      url:
+        "https://www.easy-mock.com/mock/5af43f2e5174243e26511194/SmileVue/index",
+      method: "get"
     })
-    .then(response=>{
-      console.log(response)
-    })
-    .catch(error=>{
-      cosole.log(error)
-    })
+      .then(response => {
+        console.log(response);
+        if (response.status == 200) {
+          this.category = response.data.data.category;
+          this.adbanner = response.data.data.advertesPicture.PICTURE_ADDRESS;
+          this.bannerPic = response.data.data.slides;
+          this.recommendgoods = response.data.data.recommend;
+          this.floor1 = response.data.data.floor1;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 </script>
@@ -95,9 +146,45 @@ export default {
   /* Internet Explorer 10-11 */
   color: #fff;
 }
-.swipe-area{
+.swipe-area {
   clear: both;
-  max-height: 15rem;
+  max-height: 10rem;
   overflow: hidden;
 }
+.type-bar {
+  background-color: #ffffff;
+  margin: 0 0.3rem 0.3rem 0.3rem;
+  border-radius: 0.3rem;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-width: 2rem;
+  overflow: hidden;
+}
+.type-bar div {
+  padding: 0.3rem;
+  font-size: 12px;
+  text-align: center;
+}
+.recommend {
+  background: #ffffff;
+  margin-top: 0.3rem;
+}
+.recommend-title {
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  padding: 0.2rem;
+  color: #e5017d;
+}
+.recommend-body {
+  border-bottom: 1px solid #eee;
+}
+.recommenditem {
+  width: 99%;
+  border-right: 1px solid #eee;
+  font-size: 12px;
+  text-align: center;
+}
+
 </style>
