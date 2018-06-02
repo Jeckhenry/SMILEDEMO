@@ -45,7 +45,7 @@
                <div class="recommenditem">
                   <img :src="recommend.image" width="80%" alt="">
                   <div>{{recommend.goodsName}}</div>
-                  <div>￥ {{recommend.price}}(￥{{recommend.mallPrice}})</div>
+                  <div>￥ {{recommend.price|moneyfilter}}(￥{{recommend.mallPrice|moneyfilter}})</div>
                </div>
              </swiper-slide>
            </swiper>
@@ -55,7 +55,25 @@
        <swiper-default1></swiper-default1>
        <swiper-default2></swiper-default2>
        <swiper-default3></swiper-default3> -->
-       <floor-component :floorData='floor1'></floor-component>
+       <floor-component :floorData='floor1' :floortitle='floorName.floor1'></floor-component>
+       <floor-component :floorData='floor2' :floortitle='floorName.floor2'></floor-component>
+       <floor-component :floorData='floor3' :floortitle='floorName.floor3'></floor-component>
+       
+        <!--Hot Area-->
+        <div class="hot-area">
+            <div class="hot-title">热卖商品</div>
+            <div class="hot-goods">
+              <!--这里需要一个list组件-->
+              <van-list>
+                <van-row gutter='20'>
+                    <van-col span='12' v-for='(item,index) in hotgoods' :key="index">
+                        <goodsinfocomponent :goodsImage='item.image' :goodsName='item.name' :goodsPrice='item.price'></goodsinfocomponent>
+                    </van-col>
+                </van-row>
+              </van-list>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -67,7 +85,10 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 // import swiperDefault1 from '../swiper/swiperDefault.1.vue'
 // import swiperDefault2 from '../swiper/swiperDefault.2.vue'
 // import swiperDefault3 from '../swiper/swiperDefault.3.vue'
-import floorComponent from '../component/floorComponent.vue'
+import floorComponent from "../component/floorComponent.vue";
+import goodsinfocomponent from '../component/goodsinfocomponent.vue';
+import { tomoney } from "@/filter/moneyfilter.js";
+import url from '@/serverAPI.config.js'
 export default {
   data() {
     return {
@@ -80,14 +101,22 @@ export default {
       category: [],
       adbanner: "",
       recommendgoods: [],
-      floor1: []
+      floor1: [],
+      floor2: [],
+      floor3: [],
+      floorName: [],
+      hotgoods:[]
     };
   },
-  components: { swiper, swiperSlide ,floorComponent},
+  components: { swiper, swiperSlide, floorComponent, goodsinfocomponent },
+  filters: {
+    moneyfilter(money) {
+      return tomoney(money);
+    }
+  },
   created() {
     axios({
-      url:
-        "https://www.easy-mock.com/mock/5af43f2e5174243e26511194/SmileVue/index",
+      url:url.getShoppingMallInfo,
       method: "get"
     })
       .then(response => {
@@ -98,6 +127,10 @@ export default {
           this.bannerPic = response.data.data.slides;
           this.recommendgoods = response.data.data.recommend;
           this.floor1 = response.data.data.floor1;
+          this.floor2 = response.data.data.floor2;
+          this.floor3 = response.data.data.floor3;
+          this.floorName = response.data.data.floorName;
+          this.hotgoods = response.data.data.hotGoods;
         }
       })
       .catch(error => {
@@ -186,5 +219,11 @@ export default {
   font-size: 12px;
   text-align: center;
 }
+.hot-area{
+      text-align: center;
+      font-size:14px;
+      height: 1.8rem;
+      line-height:1.8rem;
+  }
 
 </style>

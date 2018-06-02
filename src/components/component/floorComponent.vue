@@ -2,7 +2,7 @@
     <div>
         <div class="floor">
          <div class="floorone-title">
-            floor1
+            {{floortitle}}
          </div>
          <div class="floor-normaly">
             <div class="floor-one">
@@ -28,7 +28,7 @@
 
 <script>
     export default {
-        props:['floorData'],
+        props:['floorData','floortitle'],
         data(){
             return{
                 floorData0:{},
@@ -52,11 +52,10 @@
 
 <style scoped>
 .floorone-title{
-  border-bottom: 1px solid #eee;
   font-size: 14px;
-  padding: 0.2rem;
-  color: #e5017d;
-  background: #ffffff;
+  text-align: center;
+  height: 1.8rem;
+  line-height: 1.8rem;
 }
 .floor-normaly{
   display:flex;
