@@ -158,7 +158,7 @@ export default {
   color: #ffffff;
 }
 .locationIcon {
-  padding-top: 0.4rem;
+  padding-top: 0.2rem;
   padding-left: 0.3rem;
 }
 .vbutton {
