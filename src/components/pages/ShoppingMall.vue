@@ -65,9 +65,9 @@
             <div class="hot-goods">
               <!--这里需要一个list组件-->
               <van-list>
-                <van-row gutter='20'>
+                <van-row>
                     <van-col span='12' v-for='(item,index) in hotgoods' :key="index">
-                        <goodsinfocomponent :goodsImage='item.image' :goodsName='item.name' :goodsPrice='item.price'></goodsinfocomponent>
+                        <goodsinfocomponent :goodsImage='item.image' :goodsId='item.goodsId' :goodsName='item.name' :goodsPrice='item.price'></goodsinfocomponent>
                     </van-col>
                 </van-row>
               </van-list>
@@ -86,9 +86,11 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 // import swiperDefault2 from '../swiper/swiperDefault.2.vue'
 // import swiperDefault3 from '../swiper/swiperDefault.3.vue'
 import floorComponent from "../component/floorComponent.vue";
-import goodsinfocomponent from '../component/goodsinfocomponent.vue';
+import goodsinfocomponent from "../component/goodsinfocomponent.vue";
 import { tomoney } from "@/filter/moneyfilter.js";
-import url from '@/serverAPI.config.js'
+import url from "@/serverAPI.config.js";
+import data from "../../util/mock.js";
+
 export default {
   data() {
     return {
@@ -105,7 +107,7 @@ export default {
       floor2: [],
       floor3: [],
       floorName: [],
-      hotgoods:[]
+      hotgoods: []
     };
   },
   components: { swiper, swiperSlide, floorComponent, goodsinfocomponent },
@@ -116,7 +118,8 @@ export default {
   },
   created() {
     axios({
-      url:url.getShoppingMallInfo,
+      // url:url.getShoppingMallInfo,
+      url: "http://index",
       method: "get"
     })
       .then(response => {
@@ -219,11 +222,16 @@ export default {
   font-size: 12px;
   text-align: center;
 }
-.hot-area{
-      text-align: center;
-      font-size:14px;
-      height: 1.8rem;
-      line-height:1.8rem;
-  }
-
+.hot-area {
+  text-align: center;
+  font-size: 14px;
+  height: 1.8rem;
+  line-height: 1.8rem;
+}
+.hot-goods {
+  /* height: 140rem; */
+  padding-bottom: 4rem;
+  overflow: hidden;
+  background-color: #fff;
+}
 </style>

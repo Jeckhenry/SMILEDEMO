@@ -45,7 +45,7 @@ export default {
           console.log("相应成功:", response);
           if (response.data.code == 200) {
             Toast.success("注册成功");
-            this.$router.push("/");
+            this.$router.push("/login");
           } else {
             console.log(response.data.msg);
             Toast.fail("注册失败");
